@@ -42,7 +42,7 @@
 
 
 	<package name="job" extends="struts-default" namespace="/job">
-		<action name="list" class="com.quartz.monitor.action.JobAction"	method="list">
+		<action name="list" class="com.quartz.monitor.action.JobAction"	method="listAll">
 			<result name="list">/job_list.jsp</result>
 		</action>
 		<action name="list-all" class="com.quartz.monitor.action.JobAction"	method="listAll">

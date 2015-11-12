@@ -23,6 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
+			<li><a class="icon" target="navTab" href="<%=request.getContextPath()%>/job/list.action" title="刷新"><span>刷新</span></a></li>
 			<li><a class="add" href="<%=request.getContextPath()%>/job/show" target="dialog" mask="true"><span>添加</span></a></li>
 			<li><a class="delete" href="<%=request.getContextPath()%>/job/delete.action?uuid={sid_user}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个用户" rel="triggerList"  mask="true"><span>删除</span></a></li>
 <%-- 			<li><a class="edit" href="<%=request.getContextPath()%>/quartz/show.action?uuid={sid_user}" target="dialog" warn="请选择一记录"><span>修改</span></a></li> --%>
@@ -38,12 +39,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<table class="list" width="98%" targetType="navTab" asc="asc" desc="desc" layoutH="116">
 		<thead>
 			<tr>
+				<th width="80">Scheduler</th>
 				<th width="80" orderField="name" class="asc">名称</th>
 				<th width="60" orderField="num" class="desc">所属组</th>
 				<th width="100">下一次触发时间</th>
 				<th width="10">Triggers</th>
 				<th width="10">Durable</th>
-				<th width="80">所属Scheduler</th>
 				<th width="100" align="middle">操作</th>
 				<th width="70">描述</th>
 			</tr>
@@ -51,12 +52,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<tbody>
 		<s:iterator value="jobList" id="job">
 			<tr target="sid_user" rel="${job.uuid }">
+				<td>${job.schedulerName }</td>
 				<td>${job.jobName }</td>
 				<td>${job.group }</td>
 				<td><s:date name="#job.nextFireTime"   format="yyyy-MM-dd HH:mm:ss"/></td>
 				<td align='middle'><a href="<%=request.getContextPath()%>/trigger/list?jobId=${job.uuid}" target="dialog" title="Trigger列表" mask="true" rel="triggerList" width="800">${job.numTriggers }</a></td>
 				<td>${job.durability }</td>
-				<td>${job.schedulerName }</td>
 				<td align="middle">
 				<a href="<%=request.getContextPath()%>/job/start.action?uuid=${job.uuid}" target="ajaxTodo">执行</a>
 				<s:if test="#job.state == 'NORMAL'">

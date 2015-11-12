@@ -25,6 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
+			<li><a class="icon" target="navTab" href="<%=request.getContextPath()%>/quartz/list.action" title="刷新"><span>刷新</span></a></li>
 			<li><a class="add" href="addInstance.jsp" target="dialog" rel="addInstance"><span>添加</span></a></li>
 			<li><a class="delete" href="<%=request.getContextPath()%>/quartz/delete.action?uuid={sid_user}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个用户"><span>删除</span></a></li>
 			<li><a class="edit" href="<%=request.getContextPath()%>/quartz/show.action?uuid={sid_user}" target="dialog" warn="请选择一记录"><span>修改</span></a></li>
@@ -60,13 +61,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<td align="middle"><s:property value="instanceMap.get(value.uuid).status"/></td>
 				<td align="middle">
 				<a class="delete" href="<%=request.getContextPath()%>/init/reconnect?uuid=${value.uuid}" target="ajaxTodo" fresh="true">重新连接</a>
-                <s:if test="#session.configId == value.uuid">
-                    当前配置
-                </s:if>
-                <s:else>
-                    <a class="delete" href="<%=request.getContextPath()%>/init/config?uuid=${value.uuid}"  target="ajaxTodo" fresh="true">设为默认
-                    </a>
-                </s:else>
 				</td>
 			</tr>
 			</s:iterator>
