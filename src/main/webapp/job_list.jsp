@@ -23,7 +23,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="icon" target="navTab" href="<%=request.getContextPath()%>/job/list.action" title="刷新"><span>刷新</span></a></li>
 			<li><a class="add" href="<%=request.getContextPath()%>/job/show" target="dialog" mask="true"><span>添加</span></a></li>
 			<li><a class="delete" href="<%=request.getContextPath()%>/job/delete.action?uuid={sid_user}" target="ajaxTodo" title="确定要删除吗？" warn="请选择一个用户" rel="triggerList"  mask="true"><span>删除</span></a></li>
 <%-- 			<li><a class="edit" href="<%=request.getContextPath()%>/quartz/show.action?uuid={sid_user}" target="dialog" warn="请选择一记录"><span>修改</span></a></li> --%>

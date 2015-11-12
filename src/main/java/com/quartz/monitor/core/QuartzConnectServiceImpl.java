@@ -1,10 +1,12 @@
 package com.quartz.monitor.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.*;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
@@ -37,7 +39,8 @@ public class QuartzConnectServiceImpl implements QuartzConnectService
       JMXServiceURL jmxServiceURL = JMXUtil.createQuartzInstanceConnection(config);
       JMXConnector connector = null;
       try {
-         connector = JMXConnectorFactory.connect(jmxServiceURL, env);
+//         connector = JMXConnectorFactory.connect(jmxServiceURL, env);
+         connector = connectWithTimeout(jmxServiceURL, env, 3);
       } catch (Exception e) {
          QuartzInstance quartzInstance = new QuartzInstance();
          quartzInstance.setStatus(QuzrtzInstanceStatus.Fail);
@@ -68,5 +71,32 @@ public class QuartzConnectServiceImpl implements QuartzConnectService
       quartzInstance.setSchedulerList(schList);
       quartzInstance.setStatus(QuzrtzInstanceStatus.OK);
       return quartzInstance;
+   }
+
+   JMXConnector connectWithTimeout(final JMXServiceURL jmxServiceURL,
+                                   final Map<String,?> environment,
+                                   int timeoutSecond)
+           throws InterruptedException, ExecutionException, TimeoutException {
+      ExecutorService executor = Executors.newSingleThreadExecutor(new DaemonThreadFactory());
+      Future<JMXConnector> future = executor.submit(new Callable<JMXConnector>() {
+         public JMXConnector call() throws IOException {
+            return JMXConnectorFactory.connect(jmxServiceURL,environment);
+         }
+      });
+      JMXConnector connector = future.get(timeoutSecond, TimeUnit.SECONDS);
+      executor.shutdownNow();
+      return connector;
+   }
+
+
+   class DaemonThreadFactory implements ThreadFactory {
+      DaemonThreadFactory() {
+      }
+
+      public Thread newThread(Runnable r) {
+         Thread daemonThread = new Thread(r);
+         daemonThread.setDaemon(true);
+         return daemonThread;
+      }
    }
 }
